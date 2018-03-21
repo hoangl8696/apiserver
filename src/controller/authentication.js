@@ -13,11 +13,11 @@ signedToken = user => {
 
 module.exports.signIn = async function signIn (req, res) {
     try{
-
+        const token = signedToken(req.user);
+        res.status(200).json({token});
     } catch (err) {
-
+        res.status(500).json({err});
     }
-    res.send("signin");
 }
 
 module.exports.signUp = async function signUp (req, res) {
@@ -34,7 +34,7 @@ module.exports.signUp = async function signUp (req, res) {
         const token = signedToken(newUser);
         return res.status(200).json({ token });
     } catch (err) {
-        res.status(500).json(err);
+        res.status(500).json({err});
     }
 
 }
