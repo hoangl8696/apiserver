@@ -1,0 +1,1 @@
+module.exports = { JWT_SECRET: "make a stronger secret key than this"};
