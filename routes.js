@@ -1,8 +1,8 @@
 const express = require('express');
 const UserControl = require('./src/controller/user');
-
+const validator = require('./src/util/bodyValidation');
 
 const router = express.Router();
 module.exports = router;
 
-router.get('/', UserControl.demo);
+router.put('/user/update/', validator.validateUpdateBody(), UserControl.updateUser);

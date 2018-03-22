@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Authentication = require('./src/controller/authentication');
-const validateAuthBody = require('./src/util/authBodyValidation');
+const validator = require('./src/util/bodyValidation');
 const passport = require('passport');
 const passportConf = require('./passport');
 const routes = require('./routes');
@@ -22,7 +22,7 @@ const authRouter = express.Router();
 authRouter.post('/signup', Authentication.signUp);
 authRouter.post('/signin', passportLocalStrat, Authentication.signIn);
 
-app.use('/auth', validateAuthBody(), authRouter);
+app.use('/auth', validator.validateAuthBody(), authRouter);
 app.use('/api',  passportJwtStrat, routes);
 
 const swaggerOptions = require('./swagger-config.json');

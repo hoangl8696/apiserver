@@ -30,7 +30,7 @@ module.exports.getUserByEmail = async (email) => {
 
 module.exports.getUserById = async (_id) => {
     try {
-        return await model.User.findById({ _id });
+        return await model.User.findById(_id);
     } catch (err) {
         console.log("error getting user by id: %s", err);
     }
@@ -44,5 +44,13 @@ module.exports.saveNewUser = async (email, password) => {
         return await newUser.save();
     } catch (err) {
         console.log("error saving the user: %s", err);
+    }
+}
+
+module.exports.updateUser = async (_id, update) => {
+    try {
+        return await model.User.findOneAndUpdate({ _id }, update, { new: true });
+    } catch (err) {
+        console.log("error updating user: %s", err);
     }
 }
