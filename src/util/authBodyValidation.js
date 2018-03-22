@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const authBodyValidationSchema = require ('./validationSchemas').authBodySchema;
+const authBodyValidationSchema = require ('../model/credentials').authBodySchema;
 
 validateBody = () => {
     return (req, res, next) => {

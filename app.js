@@ -6,6 +6,8 @@ const validateAuthBody = require('./src/util/authBodyValidation');
 const passport = require('passport');
 const passportConf = require('./passport');
 const routes = require('./routes');
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express'); 
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/demoAPI');
@@ -16,9 +18,17 @@ const passportJwtStrat = passport.authenticate('jwt', { session: false });
 
 app.use(bodyParser.json());
 
-app.post('/signup', validateAuthBody(), Authentication.signUp);
-app.post('/signin', validateAuthBody(), passportLocalStrat, Authentication.signIn);
+const authRouter = express.Router();
+authRouter.post('/signup', Authentication.signUp);
+authRouter.post('/signin', passportLocalStrat, Authentication.signIn);
+
+app.use('/auth', validateAuthBody(), authRouter);
 app.use('/api',  passportJwtStrat, routes);
+
+const swaggerOptions = require('./swagger-config.json');
+const swaggerSpec = swaggerJSDoc(swaggerOptions);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, true, { validatorUrl: null }));
 
 const port = process.env.PORT || 3000;
 app.listen(port);
