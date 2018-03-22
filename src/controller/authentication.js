@@ -1,4 +1,4 @@
-const User = require('../model/user');
+const user = require('../model/user');
 const JWT = require('jsonwebtoken');
 const { JWT_SECRET } = require('../config/config');
 
@@ -118,13 +118,12 @@ module.exports.signIn = async function signIn (req, res) {
 module.exports.signUp = async function signUp (req, res) {
     try{
         const { email, password } = req.body;
-        const foundedUser = await User.findOne({ email });
+        const foundedUser = await user.getUserByEmail(email);
                 
         if (foundedUser) {
             return res.status(403).json({error: "email already existed"});
         }
-        const newUser = new User({ email, password});
-        await newUser.save();
+        const newUser = await user.saveNewUser(email, password);
     
         const token = signedToken(newUser);
         return res.status(200).json({ token, newUser });

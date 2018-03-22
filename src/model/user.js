@@ -1,37 +1,48 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const Schema = mongoose.Schema;
+const model = require('./index');
 
-const userSchema = new Schema ({
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    password: {
-        type: String,
-        required: true
-    }
-});
-
-userSchema.pre('save', async function (next) {
+encryptPassword = async (password) => {
     try {
         const salt = await bcrypt.genSalt(10);
-        const passwordHash = await bcrypt.hash(this.password, salt);
-        this.password = passwordHash;
-        next();
+        return await bcrypt.hash(password, salt); 
     } catch (err) {
-        next(err);
+        console.log("error encrypting password: %s", err);
     }
-});
+};
 
-userSchema.methods.validatePassword = async function (codedPassword) {
+module.exports.validatePassword = async (encryptedPassword, password) => {
     try {
-        return await bcrypt.compare(codedPassword, this.password);
+        return await bcrypt.compare(encryptedPassword, password);
     } catch (err) {
-        throw new Error(err);
+        console.log("error validating password: %s", err);
     }
 }
 
-const User = mongoose.model('user', userSchema);
-module.exports = User;
+module.exports.getUserByEmail = async (email) => {
+    try {
+        const foundedUser = await model.User.findOne({email});
+        return foundedUser;
+    } catch (err) {
+        console.log("error getting user by email: %s", err);
+    }
+}
+
+module.exports.getUserById = async (_id) => {
+    try {
+        return await model.User.findById({ _id });
+    } catch (err) {
+        console.log("error getting user by id: %s", err);
+    }
+}
+
+module.exports.saveNewUser = async (email, password) => {
+    try {
+        const newUser = new model.User({email, password});
+        
+        newUser.password = await encryptPassword(password);
+        return await newUser.save();
+    } catch (err) {
+        console.log("error saving the user: %s", err);
+    }
+}

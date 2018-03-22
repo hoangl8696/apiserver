@@ -4,21 +4,21 @@ const JWTStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 const { JWT_SECRET } = require('./src/config/config');
 
-const User = require('./src/model/user');
+const user = require('./src/model/user');
 
 passport.use(new LocalStrategy({
     usernameField: 'email'
 }, async (email, password, done) => {
     try {
-        const user = await User.findOne({ email });
-        if (!user) {
+        const foundedUser = await user.getUserByEmail( email );
+        if (!foundedUser) {
             return done(null, false);
         } 
-        const isMatch = await user.validatePassword(password);
+        const isMatch = await user.validatePassword(password, foundedUser.password);
         if (!isMatch) {
             return done(null, false); 
         }
-        return done(null, user)
+        return done(null, foundedUser)
     } catch (err) {
         return done(err,false);
     }
@@ -29,11 +29,11 @@ passport.use(new JWTStrategy({
     secretOrKey: JWT_SECRET
 }, async (payload, done) => {
     try {
-        const user = await User.findById(payload.sub);
-        if (!user) {
+        const foundedUser = await user.getUserById(payload.sub);
+        if (!foundedUser) {
             return done(null, false);
         } 
-        return done(null, user);
+        return done(null, foundedUser);
     } catch (err) {
         return done(err, false);
     }
