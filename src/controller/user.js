@@ -2,22 +2,7 @@ const user = require('../model/user');
 
 /**
 * @swagger
- *definitions:
- *  Update Information:
- *    type: object
- *    properties:
- *      name:
- *          type: string
- *      age:
- *          type: number
- *      description:
- *          type: string                          
-*/
-
-
-/**
-* @swagger
-  * /api/user/update:
+  * /api/user:
   *   put:
   *     tags:
   *       - User
@@ -38,10 +23,7 @@ const user = require('../model/user');
   *         schema:
   *           type: object
   *           properties:
-  *             newUser:
-  *               $ref: '#definitions/User'  
-  *             addInfo:
-  *               $ref: '#definitions/Update Information'
+  *             $ref: '#definitions/User full info'
   *       403:
   *         description: Invalid credentials.
   *       500:
@@ -55,4 +37,34 @@ module.exports.updateUser = async (req,res) => {
     } catch (err) {
         res.status(500).json({err});
     }    
+}
+
+/**
+* @swagger
+  * /api/user:
+  *   get:
+  *     tags:
+  *       - User
+  *     summary: Get user information
+  *     produces:
+  *       - application/json
+  *     security:
+  *       - JWT: []
+  *     responses:
+  *       200:
+  *         description: User information.
+  *         schema:
+  *           $ref: '#definitions/User full info'             
+  *       403:
+  *         description: Invalid credentials.
+  *       500:
+  *         description: Internal error.
+  *
+  */
+module.exports.getUser = async (req,res) => {
+    try {
+        res.status(200).json(req.user);
+    } catch (err) {
+        res.status(500).json({err});
+    }
 }

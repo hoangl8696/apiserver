@@ -12,34 +12,6 @@ signedToken = user => {
 };
 
 /**
- * @swagger
- * definitions:
- *   Credentials:
- *     type: object
- *     properties:
- *       email:
- *         type: string
- *       password:
- *         type: string
- */
-
- /**
- * @swagger
- * definitions:
- *   User:
- *     type: object
- *     properties:
- *       _id:
- *         type: string
- *       email:
- *         type: string
- *       password:
- *         type: string
- *       __v:
- *         type: number
- */
-
-/**
    * @swagger
    * /auth/signin:
    *   post:

@@ -5,4 +5,5 @@ const validator = require('./src/util/bodyValidation');
 const router = express.Router();
 module.exports = router;
 
-router.put('/user/update/', validator.validateUpdateBody(), UserControl.updateUser);
+router.put('/user/', validator.validateUpdateBody(), UserControl.updateUser);
+router.get('/user/', UserControl.getUser);

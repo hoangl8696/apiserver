@@ -3,7 +3,7 @@
     "swaggerDefinition": {
       "info": {
         "title": "Oskar demo API",
-        "version": "1.9.7"
+        "version": "1.0.0"
       },
       "securityDefinitions": {
         "JWT": {
@@ -21,7 +21,8 @@
     },
     "apis": [
       "./src/controller/authentication.js",
-      "./src/controller/user.js"
+      "./src/controller/user.js",
+      "./src/util/swagger.js"
     ]
   }
   
