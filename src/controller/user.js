@@ -15,14 +15,13 @@ const user = require('../model/user');
   *       - name: User Info
   *         in: body
   *         required: true
+  *         description: Atleast one field is required
   *         schema:
   *           $ref: '#definitions/Update Information'
   *     responses:
   *       200:
   *         description: User updated.
   *         schema:
-  *           type: object
-  *           properties:
   *             $ref: '#definitions/User full info'
   *       403:
   *         description: Invalid credentials.
@@ -61,8 +60,35 @@ module.exports.updateUser = async (req,res) => {
   *         description: Internal error.
   *
   */
-module.exports.getUser = async (req,res) => {
+module.exports.getUser = (req,res) => {
+    res.status(200).json(req.user);
+} 
+
+/**
+* @swagger
+  * /api/user:
+  *   delete:
+  *     tags:
+  *       - User
+  *     summary: Delete this user
+  *     produces:
+  *       - application/json
+  *     security:
+  *       - JWT: []
+  *     responses:
+  *       200:
+  *         description: User that get deleted.
+  *         schema:
+  *             $ref: '#definitions/User full info'
+  *       403:
+  *         description: Invalid credentials.
+  *       500:
+  *         description: Internal error.
+  *
+  */
+module.exports.deleteUser = async (req,res) => {
     try {
+        await user.deleteUser(req.user._id);
         res.status(200).json(req.user);
     } catch (err) {
         res.status(500).json({err});

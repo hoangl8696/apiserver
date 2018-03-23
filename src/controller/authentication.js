@@ -37,7 +37,7 @@ signedToken = user => {
    *             token:
    *               type: string
    *             user:
-   *               $ref: '#/definitions/User'
+   *               $ref: '#/definitions/User full info'
    *       403:
    *         description: Invalid credentials.
    *       500:

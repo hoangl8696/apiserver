@@ -54,3 +54,11 @@ module.exports.updateUser = async (_id, update) => {
         console.log("error updating user: %s", err);
     }
 }
+
+module.exports.deleteUser = async (_id) => {
+    try {
+        await model.User.remove({ _id });
+    } catch (err) {
+        console.log("error deleting user: %s", err);
+    }
+}
