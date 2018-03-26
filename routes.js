@@ -13,3 +13,4 @@ router.get('/user', UserControl.getUser);
 router.delete('/user', UserControl.deleteUser);
 
 router.post('/uploads', fileControl.upload.single(config.FILE_NAME), ImageControl.uploadImage);
+router.get('/uploads', ImageControl.getAllImages);

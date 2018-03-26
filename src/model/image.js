@@ -7,7 +7,7 @@ const crypto = require('crypto');
 const path = require('path');
 const multer = require('multer');
 const converter = require('byte-converter').converterBase2;
-const gfs = connection.gfs;
+const app = require('../../app');
 
 const storage = new GridFsStorage({
     url: config.DATABASE_URI,
@@ -42,3 +42,11 @@ module.exports.upload = multer({ storage, limits, fileFilter: (req,res,cb) => {
     }
     return cb("Error: file type need to be " + fileTypes, false);
 }});
+
+module.exports.getImageById = async (_id) => {
+    try {
+        return await app.gfs.files.findOne({ _id });
+    } catch (err) {
+        console.log("error getting user by ID: %s", err);
+    }
+}

@@ -13,12 +13,11 @@ const Grid = require('gridfs-stream');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.DATABASE_URI);
-let gfs;
 mongoose.connection.once('open', () => {
-    gfs = Grid(mongoose.connection.db, mongoose.mongo);
+    const gfs = Grid(mongoose.connection.db, mongoose.mongo);
     gfs.collection('uploads');
+    module.exports.gfs = gfs;
 });
-module.exports.gfs = gfs;
 
 const app = express();
 const passportLocalStrat = passport.authenticate('local', { session: false });
