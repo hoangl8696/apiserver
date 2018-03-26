@@ -62,3 +62,11 @@ module.exports.deleteUser = async (_id) => {
         console.log("error deleting user: %s", err);
     }
 }
+
+module.exports.linkImageToUser = async (_id, uploads) => {
+    try {
+        await model.User.update({ _id }, { $push: { uploads } });
+    } catch (err) {
+        console.log("error linking image: %s", err);
+    }
+}

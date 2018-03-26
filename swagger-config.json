@@ -22,6 +22,7 @@
     "apis": [
       "./src/controller/authentication.js",
       "./src/controller/user.js",
+      "./src/controller/upload.js",
       "./src/util/swagger.js"
     ]
   }

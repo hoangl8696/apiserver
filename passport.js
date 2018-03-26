@@ -3,6 +3,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const JWTStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 const { JWT_SECRET } = require('./src/config/config');
+const config = require('./src/config/config');
 
 const user = require('./src/model/user');
 
@@ -25,7 +26,7 @@ passport.use(new LocalStrategy({
 }));
 
 passport.use(new JWTStrategy({
-    jwtFromRequest: ExtractJwt.fromHeader('token'),
+    jwtFromRequest: ExtractJwt.fromHeader(config.TOKEN_NAME),
     secretOrKey: JWT_SECRET
 }, async (payload, done) => {
     try {

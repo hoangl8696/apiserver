@@ -8,9 +8,17 @@ const passportConf = require('./passport');
 const routes = require('./routes');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express'); 
+const config = require('./src/config/config');
+const Grid = require('gridfs-stream');
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/demoAPI');
+mongoose.connect(config.DATABASE_URI);
+let gfs;
+mongoose.connection.once('open', () => {
+    gfs = Grid(mongoose.connection.db, mongoose.mongo);
+    gfs.collection('uploads');
+});
+module.exports.gfs = gfs;
 
 const app = express();
 const passportLocalStrat = passport.authenticate('local', { session: false });

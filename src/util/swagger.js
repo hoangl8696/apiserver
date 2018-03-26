@@ -31,6 +31,22 @@
   /**
  * @swagger
  * definitions:
+ *   User Images:
+ *     type: object
+ *     properties:
+ *       _id:
+ *         type: string
+ *       name:
+ *         type: string
+ *       id:
+ *         type: string
+ *       __v:
+ *         type: number
+ */
+
+  /**
+ * @swagger
+ * definitions:
  *   User full info:
  *     type: object
  *     properties:
@@ -48,6 +64,10 @@
  *          type: number
  *       description:
  *          type: string
+ *       uploads:
+ *          type: array
+ *          items:
+ *              $ref: '#/definitions/User Images'
  */
  
 /**
