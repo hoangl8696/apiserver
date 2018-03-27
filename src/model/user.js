@@ -57,7 +57,7 @@ module.exports.updateUser = async (_id, update) => {
 
 module.exports.deleteUser = async (_id) => {
     try {
-        await model.User.remove({ _id });
+        return await model.User.remove({ _id });
     } catch (err) {
         console.log("error deleting user: %s", err);
     }
@@ -65,8 +65,16 @@ module.exports.deleteUser = async (_id) => {
 
 module.exports.linkImageToUser = async (_id, uploads) => {
     try {
-        await model.User.update({ _id }, { $push: { uploads } });
+        return await model.User.update({ _id }, { $push: { uploads } });
     } catch (err) {
         console.log("error linking image: %s", err);
+    }
+}
+
+module.exports.unlinkImageToUser = async (_id, imageId) => {
+    try {
+        return await model.User.update({ _id }, { $pull: { uploads: { id: imageId } } });
+    } catch (err) {
+        console.log("error unlinking image: %s", err);
     }
 }

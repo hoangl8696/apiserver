@@ -119,8 +119,7 @@ module.exports.getAllImages = async (req,res) => {
   */
 module.exports.getImage = async (req,res) => {
     try {
-        const _id = mongoose.Types.ObjectId(req.params._id);
-        const readStream = app.gfs.createReadStream({ _id });
+        const readStream = app.gfs.createReadStream({ _id : req._id });
         res.writeHead(200, {
             //this is important to add!!!
             'Content-Type': req.foundedImage.contentType
@@ -131,6 +130,38 @@ module.exports.getImage = async (req,res) => {
     }
 }
 
+/**
+* @swagger
+  * /api/uploads/{_id}:
+  *   delete:
+  *     tags:
+  *       - Image
+  *     summary: Delete image with the id of current user
+  *     produces:
+  *       - aplication/json
+  *     security:
+  *       - JWT: []  
+  *     parameters:
+  *       - name: _id
+  *         in: path
+  *         required: true
+  *         description: ID of image to delete
+  *         type: string   
+  *     responses:
+  *       200:
+  *         description: Return the deleted image meta data
+  *       403:
+  *         description: Invalid credentials.
+  *       500:
+  *         description: Internal error.
+  *
+  */
 module.exports.deleteImage = async (req,res) => {
-
+    try {
+        const deletedImage = await image.deleteImageById(req._id);
+        const result = await user.unlinkImageToUser(req.user._id, req._id);
+        return res.status(200).json(deletedImage);
+    } catch (err) {
+        return res.status(500).json({err});
+    }
 }

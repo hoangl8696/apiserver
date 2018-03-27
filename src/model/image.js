@@ -47,6 +47,14 @@ module.exports.getImageById = async _id => {
     try {
         return await app.gfs.files.findOne({ _id });
     } catch (err) {
-        console.log("error getting user by ID: %s", err);
+        console.log("error getting image by ID: %s", err);
+    }
+}
+
+module.exports.deleteImageById = async _id => {
+    try {
+        return await app.gfs.files.findOneAndDelete({ _id });
+    } catch (err) {
+        console.log("error deleting image by ID: %s", err);
     }
 }

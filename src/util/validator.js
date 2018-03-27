@@ -49,6 +49,7 @@ module.exports.validateImageBelongToUser = async (req, res, next) => {
             return res.status(400).json({err: "Image does not belong to this user"});
         }
         req.foundedImage = await result;
+        req._id = _id;
         next();
     } catch (err) {
         next(err);
