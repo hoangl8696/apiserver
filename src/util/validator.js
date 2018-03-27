@@ -22,3 +22,13 @@ module.exports.validateUpdateBody = () => {
         next();
     }
 }
+
+module.exports.validateParamObjectId = () => {
+    return (req, res, next) => {
+        const result = Joi.validate(req.params, validationSchema.objectIdParamSchema);
+        if (result.error) {
+            return res.status(400).json(result.error);
+        }
+        next();
+    }
+}

@@ -43,7 +43,7 @@ module.exports.upload = multer({ storage, limits, fileFilter: (req,res,cb) => {
     return cb("Error: file type need to be " + fileTypes, false);
 }});
 
-module.exports.getImageById = async (_id) => {
+module.exports.getImageById = async _id => {
     try {
         return await app.gfs.files.findOne({ _id });
     } catch (err) {
