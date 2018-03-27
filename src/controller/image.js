@@ -119,25 +119,18 @@ module.exports.getAllImages = async (req,res) => {
   */
 module.exports.getImage = async (req,res) => {
     try {
-        const userImage = req.user.uploads;
         const _id = mongoose.Types.ObjectId(req.params._id);
-        const result = await image.getImageById(_id);
-        const userImageId = userImage.map(i => {
-            return i.id.toString();
-        });
-        if (!userImageId.includes(req.params._id)) {
-            if (!result || result.length === 0) {
-            return res.status(400).json({err: "No image was found"});
-            }
-            return res.status(400).json({err: "Image does not belong to this user"});
-        }
         const readStream = app.gfs.createReadStream({ _id });
         res.writeHead(200, {
             //this is important to add!!!
-            'Content-Type': result.contentType
+            'Content-Type': req.foundedImage.contentType
         });
         readStream.pipe(res);
     } catch (err) {
         return res.status(500).json({err});
     }
+}
+
+module.exports.deleteImage = async (req,res) => {
+
 }
