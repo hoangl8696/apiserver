@@ -12,7 +12,8 @@ router.put('/user', validator.validateUpdateBody(), UserControl.updateUser);
 router.get('/user', UserControl.getUser);
 router.delete('/user', UserControl.deleteUser);
 
+router.all('/uploads/:_id', validator.validateParamObjectId(), validator.validateImageBelongToUser);
 router.post('/uploads', fileControl.upload.single(config.FILE_NAME), ImageControl.uploadImage);
 router.get('/uploads', ImageControl.getAllImages);
-router.get('/uploads/:_id', validator.validateParamObjectId(), validator.validateImageBelongToUser, ImageControl.getImage);
-router.delete('/uploads/:_id', validator.validateParamObjectId(), validator.validateImageBelongToUser, ImageControl.deleteImage);
+router.get('/uploads/:_id', ImageControl.getImage);
+router.delete('/uploads/:_id', ImageControl.deleteImage);
