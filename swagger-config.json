@@ -11,6 +11,12 @@
           "type": "apiKey",
           "name": "token",
           "in": "header"
+        },
+        "APIKey": {
+          "description": "Proven that you are a developer",
+          "type": "apiKey",
+          "name": "key",
+          "in": "header"
         }
       },
       "security": [

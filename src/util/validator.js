@@ -2,6 +2,7 @@ const Joi = require('joi');
 const validationSchema = require ('../model/validationSchemas');
 const mongoose = require('mongoose');
 const image = require('../model/image');
+const config = require('../config/config');
 
 module.exports.validateAuthBody = () => {
     return (req, res, next) => {
@@ -55,4 +56,14 @@ module.exports.validateImageBelongToUser = async (req, res, next) => {
         next(err);
     }
     
+}
+
+module.exports.validateDeveloper = (req, res, next) => {
+    const api_key = req.headers[config.API_KEY_NAME];
+    if (!api_key) {
+        return res.status(401).send("Unauthorized");
+    } else if (api_key !== config.API_KEY) {
+        return res.status(403).send("Incorrect key");
+    }
+    next();
 }

@@ -21,7 +21,7 @@ signedToken = user => {
    *     produces:
    *       - application/json
    *     security:
-   *       - JWT: []
+   *       - APIKey: []
    *     parameters:
    *       - name: Credentials
    *         in: body
@@ -64,7 +64,7 @@ module.exports.signIn = async function signIn (req, res) {
    *     produces:
    *       - application/json
    *     security:
-   *       - JWT: []
+   *       - APIKey: []
    *     parameters:
    *       - name: Credentials
    *         in: body

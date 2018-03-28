@@ -1,4 +1,6 @@
 module.exports = { 
+    API_KEY: "developer",
+    API_KEY_NAME: "key",
     JWT_SECRET: "make a stronger secret key than this",
     DATABASE_URI: "mongodb://localhost/demoAPI",
     TOKEN_NAME: "token",
