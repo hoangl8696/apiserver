@@ -16,19 +16,14 @@ bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGO_URI || config.DATABASE_URI);
+mongoose.connect(process.env.MONGODB_URI || config.DATABASE_URI);
 mongoose.connection.once('open', () => {
     const gfs = Grid(mongoose.connection.db, mongoose.mongo);
     gfs.collection('uploads');
     module.exports.gfs = gfs;
 });
 
-if (!process.env.REDIS_URL) {
-    module.exports.redis = redis.createClient(process.env.REDIS_URL);    
-} else {
-    module.exports.redis = redis.createClient();
-}
-
+module.exports.redis = redis.createClient(process.env.REDISCLOUD_URL || config.REDIS_URL);
 
 const app = express();
 const passportLocalStrat = passport.authenticate('local', { session: false });
