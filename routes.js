@@ -17,3 +17,4 @@ router.post('/uploads', fileControl.upload.single(config.FILE_NAME), ImageContro
 router.get('/uploads', ImageControl.getAllImages);
 router.get('/uploads/:_id', ImageControl.getImage);
 router.delete('/uploads/:_id', ImageControl.deleteImage);
+router.get('/uploads/raw/:_id', validator.validateParamObjectId(), validator.validateImageBelongToUser, ImageControl.getCachedImage);

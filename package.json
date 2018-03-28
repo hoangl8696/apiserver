@@ -19,6 +19,7 @@
   "dependencies": {
     "bcrypt": "^1.0.3",
     "bcryptjs": "^2.4.3",
+    "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "byte-converter": "^0.1.4",
     "crypto": "^1.0.1",
@@ -35,6 +36,7 @@
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
+    "redis": "^2.8.0",
     "swagger-jsdoc": "^1.9.7",
     "swagger-ui-express": "^3.0.1"
   }

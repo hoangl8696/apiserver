@@ -3,6 +3,7 @@ const model = require('../model/index');
 const app = require('../../app');
 const image = require('../model/image');
 const mongoose = require('mongoose');
+const stream = require('stream');
 
 /**
 * @swagger
@@ -93,7 +94,7 @@ module.exports.getAllImages = async (req,res) => {
   *   get:
   *     tags:
   *       - Image
-  *     summary: Retrieve all image info from current user
+  *     summary: Retrieve image with the id from current user
   *     produces:
   *       - image/jpeg
   *       - image/png
@@ -160,7 +161,55 @@ module.exports.deleteImage = async (req,res) => {
     try {
         const deletedImage = await image.deleteImageById(req._id);
         const result = await user.unlinkImageToUser(req.user._id, req._id);
-        return res.status(200).json(deletedImage);
+        return res.status(200).json({deletedImage});
+    } catch (err) {
+        return res.status(500).json({err});
+    }
+}
+
+/**
+* @swagger
+  * /api/uploads/raw/{_id}:
+  *   get:
+  *     tags:
+  *       - Image
+  *     summary: Retrieve image from  either cache or database with the id from current user
+  *     description: Deprecated due to relatively small performance change when using, need further testing
+  *     deprecated: true
+  *     produces:
+  *       - image/jpeg
+  *       - image/png
+  *       - image/jpg
+  *     security:
+  *       - JWT: []  
+  *     parameters:
+  *       - name: _id
+  *         in: path
+  *         required: true
+  *         description: ID of image to return
+  *         type: string   
+  *     responses:
+  *       200:
+  *         description: User images
+  *         schema:
+  *             type: file
+  *       403:
+  *         description: Invalid credentials.
+  *       500:
+  *         description: Internal error.
+  *
+  */
+module.exports.getCachedImage = async (req,res) => {
+    try {
+        const result = await image.getFastImage(req._id);
+        const bufferStream = new stream.PassThrough();
+        const encodedData = new Buffer(result, 'base64'); 
+        res.writeHead(200, {
+            //this is important to add!!!
+            'Content-Type': req.foundedImage.contentType
+        });
+        bufferStream.end(encodedData);
+        bufferStream.pipe(res);
     } catch (err) {
         return res.status(500).json({err});
     }

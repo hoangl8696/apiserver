@@ -10,6 +10,10 @@ const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express'); 
 const config = require('./src/config/config');
 const Grid = require('gridfs-stream');
+const redis = require('redis');
+const bluebird = require('bluebird');
+bluebird.promisifyAll(redis.RedisClient.prototype);
+bluebird.promisifyAll(redis.Multi.prototype);
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.DATABASE_URI);
@@ -18,6 +22,8 @@ mongoose.connection.once('open', () => {
     gfs.collection('uploads');
     module.exports.gfs = gfs;
 });
+
+module.exports.redis = redis.createClient();
 
 const app = express();
 const passportLocalStrat = passport.authenticate('local', { session: false });

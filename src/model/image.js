@@ -43,13 +43,14 @@ module.exports.upload = multer({ storage, limits, fileFilter: (req,res,cb) => {
     return cb("Error: file type need to be " + fileTypes, false);
 }});
 
-module.exports.getImageById = async _id => {
+const getImageById = async _id => {
     try {
         return await app.gfs.files.findOne({ _id });
     } catch (err) {
         console.log("error getting image by ID: %s", err);
     }
 }
+module.exports.getImageById = getImageById;
 
 module.exports.deleteImageById = async _id => {
     try {
@@ -57,4 +58,41 @@ module.exports.deleteImageById = async _id => {
     } catch (err) {
         console.log("error deleting image by ID: %s", err);
     }
+}
+
+//DEPRECATED
+const getRawImageById = async _id => {
+    try {
+        return new Promise(async (resolve, reject) => {
+            const readStream = await app.gfs.createReadStream({_id});
+            let data = [];
+            let img;
+            readStream.on('data', (chunk) => {
+                data.push(chunk);
+            });
+            readStream.on('end', () => {
+                data = Buffer.concat(data);
+                decodedData = data.toString('base64');
+                resolve(decodedData);
+            });
+            readStream.on('error', (error) => {
+                reject(error);
+            });
+        });
+    } catch (err) {
+        console.log("error getting raw image by ID: %s", err);
+    }
+}
+module.exports.getRawImageById = getRawImageById;
+
+//DEPRECATED
+module.exports.getFastImage = async _id => {
+    const result = await app.redis.getAsync(_id.toString());
+    if (!result) {
+        const rawImg = await getRawImageById(_id);
+        //cache for 60 seconds, then delete key, request new value
+        await app.redis.setexAsync(_id.toString(), 60, rawImg);
+        return rawImg
+    }
+    return result;
 }
