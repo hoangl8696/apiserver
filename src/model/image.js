@@ -10,7 +10,7 @@ const converter = require('byte-converter').converterBase2;
 const app = require('../../app');
 
 const storage = new GridFsStorage({
-    url: config.DATABASE_URI,
+    url: process.env.MONGODB_URI || config.DATABASE_URI,
     file: async (req, res) => {
         try {
             const buf = await crypto.randomBytes(10);
