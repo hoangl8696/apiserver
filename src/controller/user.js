@@ -1,5 +1,5 @@
 const user = require('../model/user');
-
+const image = require('../model/image');
 /**
 * @swagger
   * /api/user:
@@ -88,6 +88,14 @@ module.exports.getUser = (req,res) => {
   */
 module.exports.deleteUser = async (req,res) => {
     try {
+        const uploads = req.user.uploads;
+        await Promise.all(uploads.map(async i => {
+            try {
+                await image.deleteImageById(i.id);
+            } catch (err) {
+                return res.status(500).json({err});
+            }
+        }));
         await user.deleteUser(req.user._id);
         res.status(200).json(req.user);
     } catch (err) {
