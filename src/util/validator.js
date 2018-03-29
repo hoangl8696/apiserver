@@ -3,7 +3,7 @@ const validationSchema = require ('../model/validationSchemas');
 const mongoose = require('mongoose');
 const image = require('../model/image');
 const config = require('../config/config');
-const logger = require('../util/logger');
+// const logger = require('../util/logger');
 
 module.exports.validateAuthBody = () => {
     return (req, res, next) => {

@@ -61,6 +61,6 @@ const transportsProd = [
 ]
 
 module.exports = new winston.Logger({
-    transports: env === dev ? transportsDev : transportsProd,
+    transports: env === 'dev' ? transportsDev : transportsProd,
     exitOnError: false
 });
