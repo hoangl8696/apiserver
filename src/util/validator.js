@@ -60,7 +60,7 @@ module.exports.validateImageBelongToUser = async (req, res, next) => {
 }
 
 module.exports.validateDeveloper = (req, res, next) => {
-    logger.debug("logging successful!");
+    // logger.debug("logging successful!");
     const api_key = req.headers[config.API_KEY_NAME];
     if (!api_key) {
         return res.status(401).send("Unauthorized");

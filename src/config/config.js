@@ -8,5 +8,5 @@ module.exports = {
     FILE_NAME: "file",
     FILE_SIZE_IN_MB: 1024, //1GB
     LOG_DIR_DEV: "./logs-dev" ,
-    LOG_DIR_PROD: "./logs-prod"
+    LOG_DIR_PROD: "./logs-prod" //NOT IN USE, FAIL FEATURE, NEED FURTHER TESTING
 };

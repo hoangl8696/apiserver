@@ -1,9 +1,10 @@
+//NEVER CALL THIS MODULE, THIS IS HERE FOR REFERENCE
 const winston = require('winston');
 const fs = require('fs');
 const config = require('../config/config');
 const env = process.env.NODE_ENV || 'dev';
 require('winston-daily-rotate-file');
-const dir = env === 'dev' ? config.LOG_DIR_DEV : config.LOG_DIR_PROD;
+const dir = /*env === 'dev' ?*/ config.LOG_DIR_DEV /*: config.LOG_DIR_PROD*/;
 
 if(!fs.existsSync(dir)) {
     fs.mkdir(dir);
@@ -11,7 +12,7 @@ if(!fs.existsSync(dir)) {
 
 const timestamp = () => (new Date()).toLocaleTimeString();
 
-const transports = [
+const transportsDev = [
     new winston.transports.DailyRotateFile({
         level: 'error',
         name: 'error-file',
@@ -49,7 +50,17 @@ const transports = [
     })
 ]
 
+const transportsProd = [
+    new winston.transports.Console({
+        level: 'debug',
+        json: false,
+        colorize: true,
+        showLevel: true,
+        timestamp: true
+    })
+]
+
 module.exports = new winston.Logger({
-    transports: transports,
+    transports: env === dev ? transportsDev : transportsProd,
     exitOnError: false
 });
