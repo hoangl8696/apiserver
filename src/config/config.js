@@ -6,5 +6,7 @@ module.exports = {
     REDIS_URL: undefined,
     TOKEN_NAME: "token",
     FILE_NAME: "file",
-    FILE_SIZE_IN_MB: 1024 //1GB 
+    FILE_SIZE_IN_MB: 1024, //1GB
+    LOG_DIR_DEV: "./logs-dev" ,
+    LOG_DIR_PROD: "./logs-prod"
 };
