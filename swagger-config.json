@@ -5,6 +5,8 @@
         "title": "Oskar demo API",
         "version": "1.0.0"
       },
+      "host": "api-image-server.herokuapp.com",
+      "basePath": "/",
       "securityDefinitions": {
         "JWT": {
           "description": "JWT authentication token",
