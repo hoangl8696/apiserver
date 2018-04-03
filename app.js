@@ -28,6 +28,7 @@ module.exports.redis = redis.createClient(process.env.REDISCLOUD_URL || config.R
 const app = express();
 const passportLocalStrat = passport.authenticate('local', { session: false });
 const passportJwtStrat = passport.authenticate('jwt', { session: false });
+const passportGooglePlusStrat = passport.authenticate('googlePlusToken', { session: false });
 
 app.use(bodyParser.json());
 
@@ -35,7 +36,11 @@ const authRouter = express.Router();
 authRouter.post('/signup', Authentication.signUp);
 authRouter.post('/signin', passportLocalStrat, Authentication.signIn);
 
+const oauthRouter = express.Router();
+oauthRouter.post('/google', passportGooglePlusStrat, Authentication.oauth);
+
 app.use('/auth', validator.validateDeveloper, validator.validateAuthBody(), authRouter);
+app.use('/oauth', validator.validateDeveloper, validator.validateOAuthBody(), oauthRouter);
 app.use('/api',  passportJwtStrat, routes);
 
 const swaggerOptions = require('./swagger-config.json');

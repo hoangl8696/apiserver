@@ -6,10 +6,24 @@ module.exports.UserImages = UserImages = new mongoose.Schema ({
 });
 
 module.exports.User = new mongoose.Schema ({
-    email: { type: String, required: true, unique: true},
-    password: { type: String, required: true},
+    email: { type: String, required: false},
+    password: { type: String, required: false},
     name: { type: String, required: false },
     age: { type: Number, required: false },
     description: { type: String, required: false },
-    uploads: [ UserImages ]
+    uploads: [ UserImages ],
+    method: {
+        type: String,
+        enum: ['local', 'google', 'facebook'],
+        required: true,
+        default: 'local'
+    },
+    google: { 
+        id: { type: String },
+        email: { type: String, required: false }
+    },
+    facebook: { 
+        id: { type: String },
+        email: { type: String, required: false }
+    }
 });

@@ -90,10 +90,11 @@ module.exports.signIn = async function signIn (req, res) {
 module.exports.signUp = async function signUp (req, res) {
     try{
         const { email, password } = req.body;
+        const googleUser = await user.getUserByGoogleEmail(email);
         const foundedUser = await user.getUserByEmail(email);
                 
-        if (foundedUser) {
-            return res.status(403).json({error: "email already existed"});
+        if (foundedUser || googleUser) {
+            return res.status(403).json({error: "user already existed"});
         }
         const newUser = await user.saveNewUser(email, password);
     
@@ -102,5 +103,53 @@ module.exports.signUp = async function signUp (req, res) {
     } catch (err) {
         res.status(500).json({err});
     }
+}
 
+/**
+   * @swagger
+   * /oauth/google:
+   *   post:
+   *     tags:
+   *       - Authentication
+   *     summary: Exchange google's access-token for api token
+   *     description: Expect a google access-token, handle authorization and authorizatio-code <=> access-token exchange on the front end. 
+   *                  At the time writting this API (3rd of April 2018) Swagger UI do not support third party call, this method 
+   *                  works, but will not properly showed in Swagger UI, please use other testing tool, for example Postman
+   *     produces:
+   *       - application/json
+   *     security:
+   *       - APIKey: []
+   *     parameters:
+   *       - name: Credentials
+   *         in: body
+   *         required: true
+   *         schema:
+   *           type: object
+   *           properties:
+   *               access_token:
+   *                    type: string
+   *               refresh_token:
+   *                    type: string
+   *     responses:
+   *       200:
+   *         description: Authentication token and pass in new users.
+   *         schema:
+   *           type: object
+   *           properties:
+   *             token:
+   *               type: string
+   *             newUser:
+   *               $ref: '#definitions/User'  
+   *       403:
+   *         description: Invalid credentials.
+   *       500:
+   *         description: Internal error.
+   */
+module.exports.oauth = async function oauth (req, res) {
+    try {
+        const token = signedToken(req.user);
+        res.status(200).json({token});
+    } catch (err) {
+        res.status(500).json({err});
+    }
 }

@@ -1,4 +1,4 @@
-//NEVER CALL THIS MODULE, THIS IS HERE FOR REFERENCE
+//NEVER CALL THIS MODULE, THIS IS HERE FOR REFERENCE, WORKING BUT NEED A PLACE TO UPLOAD LOGGING FILE TO
 const winston = require('winston');
 const fs = require('fs');
 const config = require('../config/config');

@@ -78,3 +78,19 @@ module.exports.unlinkImageToUser = async (_id, imageId) => {
         console.log("error unlinking image: %s", err);
     }
 }
+
+module.exports.getUserByGoogleId = async _id => {
+    try {
+        return await model.User.findOne({ "google.id": _id });
+    } catch (err) {
+        console.log("error getting user by google id: %s", err);
+    }
+}
+
+module.exports.getUserByGoogleEmail = async email => {
+    try {
+        return await model.User.findOne({ "google.email": email });
+    } catch (err) {
+        console.log("error getting user by google email: %s", err);
+    }
+}
