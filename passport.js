@@ -54,7 +54,7 @@ passport.use("googlePlusToken", new GooglePlusTokenStrategy({
         }
         return done(null, foundedUser);
     } catch (err) {
-        done(err, false, err.message);
+        return done(err, false, err.message);
     }
 }));
 
