@@ -64,7 +64,7 @@ module.exports.validateDeveloper = (req, res, next) => {
     const api_key = req.headers[config.API_KEY_NAME];
     if (!api_key) {
         return res.status(401).send("Unauthorized");
-    } else if (api_key !== config.API_KEY) {
+    } else if (api_key !== process.env.API_KEY) {
         return res.status(403).send("Incorrect key");
     }
     next();

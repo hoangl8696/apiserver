@@ -3,7 +3,6 @@ const LocalStrategy = require('passport-local').Strategy;
 const JWTStrategy = require('passport-jwt').Strategy;
 const GooglePlusTokenStrategy = require('passport-google-plus-token');
 const { ExtractJwt } = require('passport-jwt');
-const { JWT_SECRET } = require('./src/config/config');
 const config = require('./src/config/config');
 const model = require('./src/model/index');
 const user = require('./src/model/user');
@@ -29,7 +28,7 @@ passport.use(new LocalStrategy({
 
 passport.use(new JWTStrategy({
     jwtFromRequest: ExtractJwt.fromHeader(config.TOKEN_NAME),
-    secretOrKey: JWT_SECRET
+    secretOrKey: process.env.JWT_SECRET
 }, async (payload, done) => {
     try {
         const foundedUser = await user.getUserById(payload.sub);
@@ -43,8 +42,8 @@ passport.use(new JWTStrategy({
 }));
 
 passport.use("googlePlusToken", new GooglePlusTokenStrategy({
-    clientID: config.GOOGLE_PLUS_API_CLIENT_ID,
-    clientSecret: config.GOOGLE_PLUS_API_CLIENT_SECRET
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET
 }, async (accessToken, refreshToken, profile, done) => {
     try {
         const foundedUser = await user.getUserByGoogleId(profile.id);
