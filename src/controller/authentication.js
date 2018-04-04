@@ -1,6 +1,5 @@
 const user = require('../model/user');
 const JWT = require('jsonwebtoken');
-const { JWT_SECRET } = require('../config/config');
 
 signedToken = user => {
     return JWT.sign({
@@ -8,7 +7,7 @@ signedToken = user => {
         iat: new Date().getTime(),
         sub: user._id,
         exp: new Date().setDate(new Date().getDate() + 1)
-    }, JWT_SECRET)
+    }, process.env.JWT_SECRET)
 };
 
 /**

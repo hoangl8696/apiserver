@@ -15,7 +15,6 @@ const redis = require('redis');
 const bluebird = require('bluebird');
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
-
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI || config.DATABASE_URI);
 mongoose.connection.once('open', () => {
