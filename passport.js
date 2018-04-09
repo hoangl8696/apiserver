@@ -6,6 +6,7 @@ const { ExtractJwt } = require('passport-jwt');
 const config = require('./src/config/config');
 const model = require('./src/model/index');
 const user = require('./src/model/user');
+const contentful = require('./src/contentful/user');
 
 passport.use(new LocalStrategy({
     usernameField: 'email'
@@ -48,7 +49,8 @@ passport.use("googlePlusToken", new GooglePlusTokenStrategy({
     try {
         const foundedUser = await user.getUserByGoogleId(profile.id);
         if (!foundedUser) {
-            const newUser = await createNewGoogleUser(profile);
+            const contentfulUser = await contentful.createUser(profile.emails[0].value);
+            const newUser = await createNewGoogleUser(profile, contentfulUser.sys.id);
             return done(null, newUser);
         }
         return done(null, foundedUser);
@@ -57,14 +59,15 @@ passport.use("googlePlusToken", new GooglePlusTokenStrategy({
     }
 }));
 
-createNewGoogleUser = async (profile) => {
+createNewGoogleUser = async (profile, id) => {
     try {
         const newUser = new model.User({
             method: 'google',
             google: {
                 id: profile.id,
                 email: profile.emails[0].value
-            }
+            },
+            contentfulId: id
         });
         await newUser.save();
         return newUser;

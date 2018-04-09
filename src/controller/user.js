@@ -1,5 +1,6 @@
 const user = require('../model/user');
 const image = require('../model/image');
+const contentful = require("../contentful/user");
 /**
 * @swagger
   * /api/user:
@@ -96,7 +97,7 @@ module.exports.deleteUser = async (req,res) => {
                 return res.status(500).json({err});
             }
         }));
-        await user.deleteUser(req.user._id);
+        await Promise.all([user.deleteUser(req.user._id), contentful.deleteUserById(req.user.contentfulId)]);
         res.status(200).json(req.user);
     } catch (err) {
         res.status(500).json({err});

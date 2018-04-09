@@ -1,5 +1,6 @@
 const user = require('../model/user');
 const JWT = require('jsonwebtoken');
+const contentful = require('../contentful/user');
 
 signedToken = user => {
     return JWT.sign({
@@ -95,8 +96,8 @@ module.exports.signUp = async function signUp (req, res) {
         if (foundedUser || googleUser) {
             return res.status(403).json({error: "user already existed"});
         }
-        const newUser = await user.saveNewUser(email, password);
-    
+        const contentfulUser = await contentful.createUser(email);
+        const newUser = await user.saveNewUser(email, password, contentfulUser.sys.id);
         const token = signedToken(newUser);
         return res.status(200).json({ token, newUser });
     } catch (err) {

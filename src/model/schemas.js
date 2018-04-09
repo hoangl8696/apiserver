@@ -6,8 +6,8 @@ module.exports.UserImages = UserImages = new mongoose.Schema ({
 });
 
 module.exports.User = new mongoose.Schema ({
-    email: { type: String, required: false},
-    password: { type: String, required: false},
+    email: { type: String, required: false },
+    password: { type: String, required: false },
     name: { type: String, required: false },
     age: { type: Number, required: false },
     description: { type: String, required: false },
@@ -25,5 +25,6 @@ module.exports.User = new mongoose.Schema ({
     facebook: { 
         id: { type: String },
         email: { type: String, required: false }
-    }
+    },
+    contentfulId: { type: String, required: true }
 });

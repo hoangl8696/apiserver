@@ -36,9 +36,9 @@ module.exports.getUserById = async (_id) => {
     }
 }
 
-module.exports.saveNewUser = async (email, password) => {
+module.exports.saveNewUser = async (email, password, contentfulId) => {
     try {
-        const newUser = new model.User({email, password});
+        const newUser = new model.User({email, password, contentfulId});
         
         newUser.password = await encryptPassword(password);
         return await newUser.save();

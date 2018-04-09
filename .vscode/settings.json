@@ -1,0 +1,10 @@
+{
+    "todohighlight.keywords": [
+        {
+            "text": "TODO:",
+            "color": "yellow",
+            "backgroundColor": "rgba(0,0,0,1)",
+            //other styling properties goes here ... 
+        }
+    ]
+}
