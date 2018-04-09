@@ -1,6 +1,7 @@
 const user = require('../model/user');
 const image = require('../model/image');
-const contentful = require("../contentful/user");
+const contentfulUser = require("../contentful/user");
+const contentfulImage = require("../contentful/image");
 /**
 * @swagger
   * /api/user:
@@ -90,14 +91,10 @@ module.exports.getUser = (req,res) => {
 module.exports.deleteUser = async (req,res) => {
     try {
         const uploads = req.user.uploads;
-        await Promise.all(uploads.map(async i => {
-            try {
-                await image.deleteImageById(i.id);
-            } catch (err) {
-                return res.status(500).json({err});
-            }
-        }));
-        await Promise.all([user.deleteUser(req.user._id), contentful.deleteUserById(req.user.contentfulId)]);
+        await Promise.all(uploads.map(i => image.deleteImageById(i.id)));
+        const images = contentfulImage.getImagesOfUser(req.user._id);
+        await Promise.all(images.map(i => contentfulImage.deleteImageById(i.sys.id)));
+        await Promise.all([user.deleteUser(req.user._id), contentfulUser.deleteUserById(req.user.contentfulId)]);
         res.status(200).json(req.user);
     } catch (err) {
         res.status(500).json({err});

@@ -3,7 +3,7 @@
     "swaggerDefinition": {
       "info": {
         "title": "Oskar demo API",
-        "description": "This is a hobby project of building backend API, please contact and ask me for the APIKey to start using",
+        "description": "This is a hobby project, building backend API, please contact and ask me for the APIKey to start using",
         "version": "1.0.0",
         "contact": {
           "email": "bambam861996@gmail.com"

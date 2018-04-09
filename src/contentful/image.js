@@ -58,3 +58,15 @@ module.exports.getImageById = async id => {
         console.log("error getting contentful image by id %s", err);
     }
 }
+
+module.exports.deleteImageById = async id => {
+    try {
+        const space = await manageClient.getSpace(process.env.CONTENTFUL_SPACE_ID);
+        const image = await space.getAsset(id);
+        const unpublishedImage = image.unpublish();
+        await unpublishedImage.delete();
+        return unpublishedImage;
+    } catch (err) {
+        console.log("error deleting contentful image by id %s", err);
+    }
+}
