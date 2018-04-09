@@ -4,7 +4,6 @@ const validator = require('./src/util/validator');
 const ImageControl = require('./src/controller/image');
 const fileControl = require('./src/model/image');
 const config = require('./src/config/config');
-const ContentfulControl = require('./src/controller/contentful');
 
 const router = express.Router();
 module.exports = router;
@@ -20,5 +19,3 @@ router.get('/uploads/:_id', ImageControl.getImage);
 router.delete('/uploads/:_id', ImageControl.deleteImage);
 //DEPRECATED
 router.get('/uploads/raw/:_id', validator.validateParamObjectId(), validator.validateImageBelongToUser, ImageControl.getCachedImage);
-
-router.post('/contentful', ContentfulControl.uploadContentfulImage);
