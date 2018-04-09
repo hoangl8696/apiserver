@@ -3,10 +3,27 @@
     "swaggerDefinition": {
       "info": {
         "title": "Oskar demo API",
-        "version": "1.0.0"
+        "description": "This is a hobby project of building backend API, please contact and ask me for the APIKey to start using",
+        "version": "1.0.0",
+        "contact": {
+          "email": "bambam861996@gmail.com"
+        }
       },
       "host": "api-image-server.herokuapp.com",
       "basePath": "/",
+      "tags": [{
+        "name": "Contentful",
+        "description": "Current user images manipulation, authenticate JWT to use these methods. At the time writting this API (9th of April 2018), Swagger UI will not work sometime, due to custom authorizers do not currently support passing through headers within the response and Swagger UI needs the Access-Control-Allow-Origin:* within the response header(s) to display the correct HTTP status code, if that happen, please use other tools, such as Postman to test   "
+      }, {
+        "name": "Authentication",
+        "description": "Authenticate person, authenticate APIKey to use these methods"
+      }, {
+        "name": "User",
+        "description": "Current user manipulation, authenticate JWT to use these methods"
+      }, {
+        "name": "Image",
+        "description": "Current user avatars manipulation, authenticate JWT to use these methods"
+      }],
       "securityDefinitions": {
         "JWT": {
           "description": "JWT authentication token",

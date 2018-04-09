@@ -48,3 +48,13 @@ module.exports.getImagesOfUser = async id => {
         console.log("error getting contentful images: %s", err);
     }
 }
+
+module.exports.getImageById = async id => {
+    try {
+        const space = await manageClient.getSpace(process.env.CONTENTFUL_SPACE_ID);
+        const image = await space.getAsset(id);
+        return image;
+    } catch (err) {
+        console.log("error getting contentful image by id %s", err);
+    }
+}

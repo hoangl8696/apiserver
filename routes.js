@@ -25,3 +25,4 @@ router.get('/uploads/raw/:_id', validator.validateParamObjectId(), validator.val
 
 router.post('/contentful', upload.single(config.FILE_NAME), validator.validateContentfulUploadBody(), contentfulControl.uploadImage);
 router.get('/contentful', contentfulControl.getImages);
+router.get('/contentful/:_id', contentfulControl.getImage);
