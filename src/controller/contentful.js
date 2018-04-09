@@ -8,8 +8,11 @@ const contentfulUser  = require('../contentful/user');
   *     tags:
   *       - Contentful
   *     summary: Upload user image to contentful
-  *     description: At the time writting this API (3rd of April 2018), Swagger UI will not work sometime, due to third
-  *                  party call this method make, if that happen, please use other tools, such as Postman to test         
+  *     description: At the time writting this API (9th of April 2018), Swagger UI will not work sometime, 
+  *                  due to custom authorizers do not currently support passing through headers within 
+  *                  the response and Swagger UI needs the Access-Control-Allow-Origin:*
+  *                  within the response header(s) to display the correct HTTP status code, 
+  *                  if that happen, please use other tools, such as Postman to test         
   *     produces:
   *       - application/json
   *     security:
@@ -58,6 +61,11 @@ module.exports.uploadImage = async (req, res) => {
   *     tags:
   *       - Contentful
   *     summary: Retrieve all contentful images of the current user
+  *     description: At the time writting this API (9th of April 2018), Swagger UI will not work sometime, 
+  *                  due to custom authorizers do not currently support passing through headers within 
+  *                  the response and Swagger UI needs the Access-Control-Allow-Origin:*
+  *                  within the response header(s) to display the correct HTTP status code, 
+  *                  if that happen, please use other tools, such as Postman to test     
   *     produces:
   *       - aplication/json
   *     security:

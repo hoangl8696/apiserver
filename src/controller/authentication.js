@@ -113,8 +113,11 @@ module.exports.signUp = async function signUp (req, res) {
    *       - Authentication
    *     summary: Exchange google's access-token for api token
    *     description: Expect a google access-token, handle authorization and authorizatio-code <=> access-token exchange on the front end. 
-   *                  At the time writting this API (3rd of April 2018), Swagger UI will not work sometime, due to third
-   *                  party call this method make, if that happen, please use other tools, such as Postman to test
+   *                  At the time writting this API (9th of April 2018), Swagger UI will not work sometime, 
+  *                   due to custom authorizers do not currently support passing through headers within 
+  *                   the response and Swagger UI needs the Access-Control-Allow-Origin:*
+  *                   within the response header(s) to display the correct HTTP status code, 
+  *                   if that happen, please use other tools, such as Postman to test 
    *     produces:
    *       - application/json
    *     security:
