@@ -173,7 +173,7 @@ module.exports.deleteImage = async (req,res) => {
   *   get:
   *     tags:
   *       - Image
-  *     summary: Retrieve image from  either cache or database with the id from current user
+  *     summary: Retrieve image from either Redis cache or Mongo database with the id from current user
   *     description: Deprecated due to relatively small performance change when using, need further testing
   *     deprecated: true
   *     produces:

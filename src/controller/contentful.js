@@ -8,6 +8,8 @@ const contentfulUser  = require('../contentful/user');
   *     tags:
   *       - Contentul
   *     summary: Upload user image to contentful
+  *              At the time writting this API (3rd of April 2018), Swagger UI will not work sometime, due to third
+  *              party call this method make, if that happen, please use other tools, such as Postman to test
   *     produces:
   *       - application/json
   *     security:
