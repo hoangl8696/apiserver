@@ -24,3 +24,4 @@ router.delete('/uploads/:_id', ImageControl.deleteImage);
 router.get('/uploads/raw/:_id', validator.validateParamObjectId(), validator.validateImageBelongToUser, ImageControl.getCachedImage);
 
 router.post('/contentful', upload.single(config.FILE_NAME), validator.validateContentfulUploadBody(), contentfulControl.uploadImage);
+router.get('/contentful', contentfulControl.getImages);

@@ -38,3 +38,13 @@ module.exports.uploadImage = async (data, file) => {
         console.log("error uploading contentful image: %s", err);
     }
 }
+
+module.exports.getImagesOfUser = async id => {
+    try {
+        const user = await deliveryClient.getEntry(id);
+        const images = user.fields.uploads;
+        return images;
+    } catch (err) {
+        console.log("error getting contentful images: %s", err);
+    }
+}

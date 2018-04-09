@@ -6,7 +6,7 @@ const contentfulUser  = require('../contentful/user');
   * /api/contentful:
   *   post:
   *     tags:
-  *       - Contentul
+  *       - Contentful
   *     summary: Upload user image to contentful
   *     description: At the time writting this API (3rd of April 2018), Swagger UI will not work sometime, due to third
   *                  party call this method make, if that happen, please use other tools, such as Postman to test         
@@ -46,6 +46,40 @@ module.exports.uploadImage = async (req, res) => {
         const image = await contentfulImage.uploadImage(req.body, req.file);
         await contentfulUser.linkAsset(req.user.contentfulId, image.sys.id);
         res.status(200).json({image});
+    } catch (err) {
+        res.status(500).json({err});
+    }
+}
+
+/**
+* @swagger
+  * /api/contentful:
+  *   get:
+  *     tags:
+  *       - Contentful
+  *     summary: Retrieve all contentful images of the current user
+  *     produces:
+  *       - aplication/json
+  *     security:
+  *       - JWT: []  
+  *     responses:
+  *       200:
+  *         description: User images
+  *         schema:
+  *             type: file
+  *       403:
+  *         description: Invalid credentials.
+  *       500:
+  *         description: Internal error.
+  *
+  */
+module.exports.getImages = async (req, res) => {
+    try {
+        const images = await contentfulImage.getImagesOfUser(req.user.contentfulId);
+        if (images) {
+            return res.status(200).json({images});
+        } 
+        return res.status(404).json({error: 'no images were found'});
     } catch (err) {
         res.status(500).json({err});
     }
