@@ -92,7 +92,7 @@ module.exports.deleteUser = async (req,res) => {
     try {
         const uploads = req.user.uploads;
         await Promise.all(uploads.map(i => image.deleteImageById(i.id)));
-        const images = contentfulImage.getImagesOfUser(req.user._id);
+        const images = contentfulImage.getImagesOfUser(req.user.contentfulId);
         await Promise.all(images.map(i => contentfulImage.deleteImageById(i.sys.id)));
         await Promise.all([user.deleteUser(req.user._id), contentfulUser.deleteUserById(req.user.contentfulId)]);
         res.status(200).json(req.user);
