@@ -52,3 +52,25 @@ module.exports.getUserById = async id => {
         console.log("error getting a user by id: %s", err);
     }
 }
+
+module.exports.linkAsset = async (userId, assetId) => {
+    try {
+        const space = await manageClient.getSpace(process.env.CONTENTFUL_SPACE_ID);
+        const user = await space.getEntry(userId);
+        if (user.fields.uploads === undefined) {
+            user.fields.uploads = {'en-GB': []};
+        }
+        user.fields.uploads['en-GB'].push({
+            sys: {
+                type: 'Link',
+                linkType: 'Asset',
+                id: assetId
+            }
+        });
+        const updatedUser = await user.update();
+        const publishedUser = await updatedUser.publish();
+        return publishedUser;
+    } catch (err) {
+        console.log("error linking asset: %s", err);
+    }
+}

@@ -80,3 +80,13 @@ module.exports.validateOAuthBody = () => {
         next();
     }
 }
+
+module.exports.validateContentfulUploadBody = () => {
+    return (req,res,next) => {
+        const result = Joi.validate(req.body, validationSchema.contentfulFileUploadSchema);
+        if (result.error) {
+            return res.status(400).json(result.error);
+        }
+        next();
+    }
+}

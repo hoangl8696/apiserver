@@ -20,4 +20,9 @@ module.exports = {
         access_token: Joi.string().required(),
         refresh_token: Joi.string()
     }),
+
+    contentfulFileUploadSchema: Joi.object().keys({
+        title: Joi.string().required(),
+        description: Joi.string()
+    })
 };

@@ -31,6 +31,7 @@
       "./src/controller/authentication.js",
       "./src/controller/user.js",
       "./src/controller/image.js",
+      "./src/controller/contentful.js",
       "./src/util/swagger.js"
     ]
   }
