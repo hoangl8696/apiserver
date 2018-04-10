@@ -3,7 +3,7 @@ const contentfulUser  = require('../contentful/user');
 
 /**
 * @swagger
-  * /api/contentful:
+  * /api/contentful/image:
   *   post:
   *     tags:
   *       - Contentful
@@ -51,7 +51,7 @@ module.exports.uploadImage = async (req, res) => {
 
 /**
 * @swagger
-  * /api/contentful:
+  * /api/contentful/image:
   *   get:
   *     tags:
   *       - Contentful
@@ -85,7 +85,7 @@ module.exports.getImages = async (req, res) => {
 
 /**
 * @swagger
-  * /api/contentful/{_id}:
+  * /api/contentful/image/{_id}:
   *   get:
   *     tags:
   *       - Contentful
@@ -103,8 +103,6 @@ module.exports.getImages = async (req, res) => {
   *     responses:
   *       200:
   *         description: User images
-  *         schema:
-  *             type: file
   *       403:
   *         description: Invalid credentials.
   *       500:
@@ -124,6 +122,36 @@ module.exports.getImage = async (req, res) => {
         }
         return res.status(404).json({error: 'this user have no images'});
     } catch (err) {
+        res.status(500).json({err});
+    }
+}
+
+/**
+* @swagger
+  * /api/contentful/user:
+  *   get:
+  *     tags:
+  *       - Contentful
+  *     summary: Retrieve the current contentful user data that link to this user   
+  *     produces:
+  *       - aplication/json
+  *     security:
+  *       - JWT: []  
+  *     responses:
+  *       200:
+  *         description: User data
+  *       403:
+  *         description: Invalid credentials.
+  *       500:
+  *         description: Internal error.
+  *
+  */
+module.exports.getUser = async (req, res) => {
+    try {
+        const user = await contentfulUser.getUserById(req.user.contentfulId);
+        return res.status(200).json({user});
+    } catch (err) {
+        console.log(err);
         res.status(500).json({err});
     }
 }

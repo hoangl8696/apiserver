@@ -63,7 +63,7 @@ module.exports.deleteImageById = async id => {
     try {
         const space = await manageClient.getSpace(process.env.CONTENTFUL_SPACE_ID);
         const image = await space.getAsset(id);
-        const unpublishedImage = image.unpublish();
+        const unpublishedImage = await image.unpublish();
         await unpublishedImage.delete();
         return unpublishedImage;
     } catch (err) {
