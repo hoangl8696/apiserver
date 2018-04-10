@@ -89,7 +89,7 @@ module.exports.getImages = async (req, res) => {
   *   get:
   *     tags:
   *       - Contentful
-  *     summary: Delete contentful image of the current user with _id   
+  *     summary: Retrieve contentful image of the current user with _id   
   *     produces:
   *       - aplication/json
   *     parameters:
@@ -124,7 +124,7 @@ module.exports.getImage = async (req, res) => {
   *   delete:
   *     tags:
   *       - Contentful
-  *     summary: Retrieve contentful image of the current user with _id   
+  *     summary: Delete contentful image of the current user with _id   
   *     produces:
   *       - aplication/json
   *     parameters:
