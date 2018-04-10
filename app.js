@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const redirect = require('express-redirect');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Authentication = require('./src/controller/authentication');
@@ -26,6 +27,7 @@ mongoose.connection.once('open', () => {
 module.exports.redis = redis.createClient(process.env.REDISCLOUD_URL || config.REDIS_URL);
 
 const app = express();
+redirect(app);
 const passportLocalStrat = passport.authenticate('local', { session: false });
 const passportJwtStrat = passport.authenticate('jwt', { session: false });
 const passportGooglePlusStrat = passport.authenticate('googlePlusToken', { session: false });
@@ -47,6 +49,8 @@ const swaggerOptions = require('./swagger-config.json');
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, true, { validatorUrl: null }));
+
+app.redirect('*','https://api-image-server.herokuapp.com/api-docs/');
 
 const port = process.env.PORT || 3000;
 app.listen(port);
