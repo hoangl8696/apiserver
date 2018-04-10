@@ -23,7 +23,9 @@ router.delete('/uploads/:_id', ImageControl.deleteImage);
 //DEPRECATED
 router.get('/uploads/raw/:_id', validator.validateParamObjectId(), validator.validateImageBelongToUser, ImageControl.getCachedImage);
 
+router.all('/contentful/image/:_id', validator.validateContentfulImageBelongToUser);
 router.post('/contentful/image', upload.single(config.FILE_NAME), validator.validateContentfulUploadBody(), contentfulControl.uploadImage);
 router.get('/contentful/image', contentfulControl.getImages);
 router.get('/contentful/image/:_id', contentfulControl.getImage);
+router.delete('/contentful/image/:_id', contentfulControl.deleteImage);
 router.get('/contentful/user', contentfulControl.getUser);

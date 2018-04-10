@@ -74,3 +74,23 @@ module.exports.linkAsset = async (userId, assetId) => {
         console.log("error linking asset: %s", err);
     }
 }
+
+module.exports.unlinkAsset = async (userId, assetId) => {
+    try {
+        const space = await manageClient.getSpace(process.env.CONTENTFUL_SPACE_ID);
+        const user = await space.getEntry(userId);
+        if (user.fields.uploads === undefined) {
+            return;
+        }
+        const ids = user.fields.uploads['en-GB'].map(i => i.sys.id);
+        if (!ids.includes(assetId)) {
+            return;
+        }
+        user.fields.uploads['en-GB'].splice(ids.indexOf(assetId), 1);
+        const updatedUser = await user.update();
+        const publishedUser = await updatedUser.publish();
+        return publishedUser;
+    } catch (err) {
+        console.log("error unlinking asset: %s", err);
+    }
+}

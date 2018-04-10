@@ -3,6 +3,7 @@ const validationSchema = require ('../model/validationSchemas');
 const mongoose = require('mongoose');
 const image = require('../model/image');
 const config = require('../config/config');
+const contentfulImage = require('../contentful/image');
 // const logger = require('../util/logger');
 
 module.exports.validateAuthBody = () => {
@@ -55,8 +56,23 @@ module.exports.validateImageBelongToUser = async (req, res, next) => {
         next();
     } catch (err) {
         next(err);
+    }   
+}
+
+module.exports.validateContentfulImageBelongToUser = async (req, res, next) => {
+    try {
+        const images = await contentfulImage.getImagesOfUser(req.user.contentfulId);
+        if (images) {
+            const id = images.map(image => image.sys.id.toString());
+            if (id.includes(req.params._id)) {
+                return next();
+            }
+            return res.status(401).json({error: 'cannot find this image or this image does not belong to the user'});
+        }
+        return res.status(404).json({error: 'this user have no images'});
+    } catch (err) {
+        return next(err);
     }
-    
 }
 
 module.exports.validateDeveloper = (req, res, next) => {

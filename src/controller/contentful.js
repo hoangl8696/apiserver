@@ -89,7 +89,7 @@ module.exports.getImages = async (req, res) => {
   *   get:
   *     tags:
   *       - Contentful
-  *     summary: Retrieve contentful image of the current user with _id   
+  *     summary: Delete contentful image of the current user with _id   
   *     produces:
   *       - aplication/json
   *     parameters:
@@ -111,16 +111,46 @@ module.exports.getImages = async (req, res) => {
   */
 module.exports.getImage = async (req, res) => {
     try {
-        const images = await contentfulImage.getImagesOfUser(req.user.contentfulId);
-        if (images) {
-            const id = images.map(image => image.sys.id);
-            if (id.includes(req.params._id)) {
-                const image = await contentfulImage.getImageById(req.params._id);
-                return res.status(200).json({image});
-            }
-            return res.status(401).json({error: 'cannot find this image or this image does not belong to the user'});
-        }
-        return res.status(404).json({error: 'this user have no images'});
+        const image = await contentfulImage.getImageById(req.params._id);
+        return res.status(200).json({image});
+    } catch (err) {
+        res.status(500).json({err});
+    }
+}
+
+/**
+* @swagger
+  * /api/contentful/image/{_id}:
+  *   delete:
+  *     tags:
+  *       - Contentful
+  *     summary: Retrieve contentful image of the current user with _id   
+  *     produces:
+  *       - aplication/json
+  *     parameters:
+  *       - name: _id
+  *         in: path
+  *         required: true
+  *         description: ID of image to return
+  *         type: string 
+  *     security:
+  *       - JWT: []  
+  *     responses:
+  *       200:
+  *         description: User images
+  *       403:
+  *         description: Invalid credentials.
+  *       500:
+  *         description: Internal error.
+  *
+  */
+module.exports.deleteImage = async (req, res) => {
+    try {
+        const results = await Promise.all([
+            contentfulUser.unlinkAsset(req.user.contentfulId, req.params._id),
+            contentfulImage.deleteImageById(req.params._id)
+        ])
+        res.status(200).json({ image: results[1] });
     } catch (err) {
         res.status(500).json({err});
     }
