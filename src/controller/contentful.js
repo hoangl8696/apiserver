@@ -49,50 +49,6 @@ module.exports.uploadImage = async (req, res) => {
     }
 }
 
-
-/**
-* @swagger
-  * /api/contentful/fast/image:
-  *   post:
-  *     tags:
-  *       - Contentful
-  *     summary: Upload user image to contentful, use this method if don't need any response
-  *     produces:
-  *       - application/json
-  *     security:
-  *       - JWT: []
-  *     consumes:
-  *       - multipart/form-data
-  *     parameters:
-  *       - name: file
-  *         in: formData
-  *         required: true
-  *         description: image to upload
-  *         type: file
-  *       - name: title
-  *         in: formData
-  *         required: true
-  *         description: title of the image
-  *         type: string    
-  *       - name: description
-  *         in: formData
-  *         required: false
-  *         description: description of the image
-  *         type: string       
-  *     responses:
-  *       200:
-  *         description: file added           
-  *       403:
-  *         description: Invalid credentials.
-  *       500:
-  *         description: Internal error.
-  *
-  */
-module.exports.uploadImageFast = (req, res) => {
-    queue.createContentfulImageUploadJob(req.body, req.file, req.user.contentfulId);
-    res.status(200).json({OK: 1});
-}
-
 /**
 * @swagger
   * /api/contentful/image:
@@ -202,37 +158,6 @@ module.exports.deleteImage = async (req, res) => {
 
 /**
 * @swagger
-  * /api/contentful/fast/image/{_id}:
-  *   delete:
-  *     tags:
-  *       - Contentful
-  *     summary: Delete contentful image of the current user with _id, use this method if don't need any response
-  *     produces:
-  *       - aplication/json
-  *     parameters:
-  *       - name: _id
-  *         in: path
-  *         required: true
-  *         description: ID of image to return
-  *         type: string 
-  *     security:
-  *       - JWT: []  
-  *     responses:
-  *       200:
-  *         description: User images
-  *       403:
-  *         description: Invalid credentials.
-  *       500:
-  *         description: Internal error.
-  *
-  */
-module.exports.deleteImageFast = (req, res) => {
-    queue.createContentfulImageDeleteJob(req.user.contentfulId, req.params._id);
-    res.status(200).json({OK: 1});
-}
-
-/**
-* @swagger
   * /api/contentful/user:
   *   get:
   *     tags:
@@ -259,4 +184,80 @@ module.exports.getUser = async (req, res) => {
         console.log(err);
         res.status(500).json({err});
     }
+}
+
+/**
+* @swagger
+  * /api/contentful/fast/image:
+  *   post:
+  *     tags:
+  *       - Contentful
+  *     summary: Upload user image to contentful with no response
+  *     description: Using kue, server will return immediately, improve performance if you don't need response
+  *     produces:
+  *       - application/json
+  *     security:
+  *       - JWT: []
+  *     consumes:
+  *       - multipart/form-data
+  *     parameters:
+  *       - name: file
+  *         in: formData
+  *         required: true
+  *         description: image to upload
+  *         type: file
+  *       - name: title
+  *         in: formData
+  *         required: true
+  *         description: title of the image
+  *         type: string    
+  *       - name: description
+  *         in: formData
+  *         required: false
+  *         description: description of the image
+  *         type: string       
+  *     responses:
+  *       200:
+  *         description: file added           
+  *       403:
+  *         description: Invalid credentials.
+  *       500:
+  *         description: Internal error.
+  *
+  */
+ module.exports.uploadImageFast = (req, res) => {
+    queue.createContentfulImageUploadJob(req.body, req.file, req.user.contentfulId);
+    res.status(200).json({OK: 1});
+}
+
+/**
+* @swagger
+  * /api/contentful/fast/image/{_id}:
+  *   delete:
+  *     tags:
+  *       - Contentful
+  *     summary: Delete contentful image of the current user with _id with no response
+  *     description: Using kue, server will return immediately, improve performance if you don't need response
+  *     produces:
+  *       - aplication/json
+  *     parameters:
+  *       - name: _id
+  *         in: path
+  *         required: true
+  *         description: ID of image to return
+  *         type: string 
+  *     security:
+  *       - JWT: []  
+  *     responses:
+  *       200:
+  *         description: User images
+  *       403:
+  *         description: Invalid credentials.
+  *       500:
+  *         description: Internal error.
+  *
+  */
+ module.exports.deleteImageFast = (req, res) => {
+    queue.createContentfulImageDeleteJob(req.user.contentfulId, req.params._id);
+    res.status(200).json({OK: 1});
 }
