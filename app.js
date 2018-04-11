@@ -14,6 +14,7 @@ const config = require('./src/config/config');
 const Grid = require('gridfs-stream');
 const redis = require('redis');
 const bluebird = require('bluebird');
+const queue = require('./src/jobs/queue');
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 mongoose.Promise = global.Promise;
@@ -52,6 +53,8 @@ const swaggerSpec = swaggerJSDoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, true, { validatorUrl: null }));
 
 app.redirect('*','https://api-image-server.herokuapp.com/api-docs/');
+
+const q = queue.createQueue();
 
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {

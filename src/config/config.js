@@ -7,4 +7,6 @@ module.exports = {
     FILE_SIZE_IN_MB: 1024, //1GB
     LOG_DIR_DEV: "./logs-dev" ,
     LOG_DIR_PROD: ".pro/logs-prod", //NOT IN USE, FAIL FEATURE, NEED FURTHER TESTING
+    RETRY_ATTEMPS: 10,
+    CONTENTFUL_IMAGE_UPLOAD_JOB: 1
 };
