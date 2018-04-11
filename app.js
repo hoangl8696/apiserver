@@ -24,7 +24,8 @@ mongoose.connection.once('open', () => {
     module.exports.gfs = gfs;
 });
 
-module.exports.redis = redis.createClient(process.env.REDISCLOUD_URL || config.REDIS_URL);
+const client = redis.createClient(process.env.REDISCLOUD_URL || config.REDIS_URL);
+module.exports.redis = client;
 
 const app = express();
 redirect(app);
@@ -53,4 +54,11 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, true, { valid
 app.redirect('*','https://api-image-server.herokuapp.com/api-docs/');
 
 const port = process.env.PORT || 3000;
-app.listen(port);
+const server = app.listen(port, () => {
+    process.on('SIGINT', () => {
+        server.close(async ()=>{
+            await Promise.all([mongoose.connection.close(), client.quit()]);
+            process.exit();
+        });
+    });
+});
