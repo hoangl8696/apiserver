@@ -55,9 +55,10 @@ app.redirect('*','https://api-image-server.herokuapp.com/api-docs/');
 
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
-    process.on('SIGINT', () => {
+    process.on('SIGTERM', () => {
         server.close(async ()=>{
             await Promise.all([mongoose.connection.close(), client.quit()]);
+            process.kill();
         });
     });
 });
