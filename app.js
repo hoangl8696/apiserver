@@ -58,7 +58,6 @@ const server = app.listen(port, () => {
     process.on('SIGINT', () => {
         server.close(async ()=>{
             await Promise.all([mongoose.connection.close(), client.quit()]);
-            process.exit();
         });
     });
 });
