@@ -202,6 +202,37 @@ module.exports.deleteImage = async (req, res) => {
 
 /**
 * @swagger
+  * /api/contentful/fast/image/{_id}:
+  *   delete:
+  *     tags:
+  *       - Contentful
+  *     summary: Delete contentful image of the current user with _id, use this method if don't need any response
+  *     produces:
+  *       - aplication/json
+  *     parameters:
+  *       - name: _id
+  *         in: path
+  *         required: true
+  *         description: ID of image to return
+  *         type: string 
+  *     security:
+  *       - JWT: []  
+  *     responses:
+  *       200:
+  *         description: User images
+  *       403:
+  *         description: Invalid credentials.
+  *       500:
+  *         description: Internal error.
+  *
+  */
+module.exports.deleteImageFast = (req, res) => {
+    queue.createContentfulImageDeleteJob(req.user.contentfulId, req.params._id);
+    res.status(200).json({OK: 1});
+}
+
+/**
+* @swagger
   * /api/contentful/user:
   *   get:
   *     tags:

@@ -31,3 +31,4 @@ router.delete('/contentful/image/:_id', contentfulControl.deleteImage);
 router.get('/contentful/user', contentfulControl.getUser);
 
 router.post('/contentful/fast/image/', upload.single(config.FILE_NAME), validator.validateContentfulUploadBody(), contentfulControl.uploadImageFast);
+router.delete('/contentful/fast/image/:_id', contentfulControl.deleteImageFast);

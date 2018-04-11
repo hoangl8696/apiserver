@@ -20,21 +20,6 @@ module.exports.createQueue = () => {
         jobEvents: false
     });
 
-    queue.on('job complete', (id, result) => {
-        kue.Job.get(id, (err, job) => {
-            if (err) {
-                console.log(`Queue ${id} create error: ${err}`);
-                return;
-            } 
-            job.remove((err) => {
-                if (err) {
-                    console.log(`Error removing job: ${job.id}, ${err}`);
-                    return;
-                }
-            });
-        })
-    });
-
     return queue;
 }
 
@@ -50,12 +35,31 @@ module.exports.createContentfulImageUploadJob = (body, file, userId) => {
     .priority('normal')
     .attempts(retryTimes)
     .backoff(retryDelayTime)
+    .removeOnComplete(true)
     .ttl(60*1000);
 
     job.save((err) => {
         if (err) {
             console.log("error creating job for contentful image upload", err);
         }
-    })
+    });
 }
 
+module.exports.createContentfulImageDeleteJob = (userId, imageId) => {
+    const job = queue.create('contentful', {
+        code: config.CONTENTFUL_IMAGE_DELETE_JOB,
+        userId,
+        imageId
+    })
+    .priority('normal')
+    .attempts(retryTimes)
+    .backoff(retryDelayTime)
+    .removeOnComplete(true)
+    .ttl(60*1000);
+
+    job.save((err) => {
+        if (err) {
+            console.log("error creating job for contentful image delete", err);
+        }
+    });
+}
