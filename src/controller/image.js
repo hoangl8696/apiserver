@@ -82,7 +82,12 @@ module.exports.getAllImages = async (req,res) => {
         if (!result || result.length === 0) {
             return res.status(400).json({err: "no image was found"});
         }
-       return res.status(200).json(result);
+        const preparedResponse = result.map(file => {
+            file.id = file[_id];
+            file._id = "";
+            return file;
+        }) 
+       return res.status(200).json(preparedResponse);
     } catch (err) {
         return res.status(500).json({err});
     }
