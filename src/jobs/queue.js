@@ -20,6 +20,10 @@ module.exports.createQueue = () => {
         jobEvents: false
     });
 
+    queue.on('error', (err) => {
+        console.log('Queue error: %s', err);
+    });
+
     return queue;
 }
 
