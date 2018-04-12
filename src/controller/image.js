@@ -87,7 +87,7 @@ module.exports.getAllImages = async (req,res) => {
             file._id = "";
             return file;
         }) 
-       return res.status(200).json(preparedResponse);
+       return res.status(200).json(result);
     } catch (err) {
         return res.status(500).json({err});
     }
