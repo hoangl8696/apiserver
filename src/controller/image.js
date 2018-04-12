@@ -37,7 +37,7 @@ module.exports.uploadImage = async (req, res) => {
     try {
         const image = new model.UserImages ({
             name: req.file.originalname,
-            id: req.file.id 
+            imageId: req.file.id 
         });
         await user.linkImageToUser(req.user._id, image);
         return res.status(200).json({file: req.file});

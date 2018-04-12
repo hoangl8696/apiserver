@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 module.exports.UserImages = UserImages = new mongoose.Schema ({
     name: { type: String, required: true },
-    id: { type: mongoose.Schema.Types.ObjectId, required: true}
+    imageId: { type: mongoose.Schema.Types.ObjectId, required: true}
 });
 
 module.exports.User = new mongoose.Schema ({
