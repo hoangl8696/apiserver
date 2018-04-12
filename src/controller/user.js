@@ -63,7 +63,7 @@ module.exports.updateUser = async (req,res) => {
   *
   */
 module.exports.getUser = (req,res) => {
-    res.status(200).json({user: req.user});
+    res.status(200).json(req.user);
 } 
 
 /**
