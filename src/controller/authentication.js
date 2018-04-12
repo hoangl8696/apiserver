@@ -97,9 +97,9 @@ module.exports.signUp = async function signUp (req, res) {
             return res.status(403).json({error: "user already existed"});
         }
         const contentfulUser = await contentful.createUser(email);
-        const newUser = await user.saveNewUser(email, password, contentfulUser.sys.id);
+        const user = await user.saveNewUser(email, password, contentfulUser.sys.id);
         const token = signedToken(newUser);
-        return res.status(200).json({ token, newUser });
+        return res.status(200).json({ token, user });
     } catch (err) {
         res.status(500).json({err});
     }
