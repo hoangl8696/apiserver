@@ -43,7 +43,7 @@ module.exports.validateImageBelongToUser = async (req, res, next) => {
         const _id = mongoose.Types.ObjectId(req.params._id);
         const result = await image.getImageById(_id);
         const userImageId = userImage.map(i => {
-            return i.id.toString();
+            return i.imageId.toString();
         });
         if (!userImageId.includes(req.params._id)) {
             if (!result || result.length === 0) {
