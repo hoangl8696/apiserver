@@ -73,7 +73,7 @@ module.exports.linkImageToUser = async (_id, uploads) => {
 
 module.exports.unlinkImageToUser = async (_id, imageId) => {
     try {
-        return await model.User.update({ _id }, { $pull: { uploads: { id: imageId } } });
+        return await model.User.update({ _id }, { $pull: { uploads: { imageId } } });
     } catch (err) {
         console.log("error unlinking image: %s", err);
     }
