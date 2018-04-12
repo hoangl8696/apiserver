@@ -74,7 +74,7 @@ module.exports.getAllImages = async (req,res) => {
         const uploads = req.user.uploads;
         const result = await Promise.all(uploads.map(async i => {
             try {
-                return await image.getImageById(i.id);
+                return await image.getImageById(i.imageId);
             } catch (err) {
                 return res.status(500).json({err});
             }
