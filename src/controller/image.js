@@ -40,7 +40,7 @@ module.exports.uploadImage = async (req, res) => {
             imageId: req.file.id 
         });
         await user.linkImageToUser(req.user._id, image);
-        return res.status(200).json({file: req.file});
+        return res.status(200).json(req.file);
     } catch (err) {
         return res.status(400).json({err});
     }
