@@ -319,6 +319,10 @@ module.exports.getUser = async (req, res) => {
 module.exports.streamImage = async (req, res) => {
     try {
         const url = req.body.url;
+        // res.writeHead(200, {
+        //     //this is important to add!!!
+        //     'Content-Type': 'png'
+        // });
         request.get(url).pipe(res);
     } catch (err) {
         res.status(500).json({err});

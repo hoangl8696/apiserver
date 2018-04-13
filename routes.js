@@ -29,7 +29,7 @@ router.get('/contentful/image', contentfulControl.getImages);
 router.get('/contentful/image/:_id', contentfulControl.getImage);
 router.delete('/contentful/image/:_id', contentfulControl.deleteImage);
 router.get('/contentful/user', contentfulControl.getUser);
-router.post('/contentful/stream/image/', validator.validateContentfulImageStreamBody, contentfulControl.streamImage)
+router.post('/contentful/stream/image/', validator.validateContentfulImageStreamBody(), contentfulControl.streamImage)
 
 router.post('/contentful/fast/image/', upload.single(config.FILE_NAME), validator.validateContentfulUploadBody(), contentfulControl.uploadImageFast);
 router.delete('/contentful/fast/image/:_id', contentfulControl.deleteImageFast);

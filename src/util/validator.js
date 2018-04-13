@@ -109,7 +109,7 @@ module.exports.validateContentfulUploadBody = () => {
 
 module.exports.validateContentfulImageStreamBody = () => {
     return (req, res, next) => {
-        const result = Joi.validate(req.body, validationSchema.validateContentfulImageStreamBody);
+        const result = Joi.validate(req.body, validationSchema.contentfulImageStreamSchema);
         if (result.error) {
             return res.status(400).json(result.error);
         }
