@@ -32,7 +32,7 @@ const queue = require('../jobs/queue');
   *         type: string       
   *     responses:
   *       200:
-  *         description: User that get deleted.
+  *         description: Return uploaded image.
   *         schema:
   *             $ref: '#definitions/Contentful Image'       
   *       403:
