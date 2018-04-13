@@ -161,7 +161,7 @@ module.exports.deleteImage = async (req,res) => {
     try {
         const deletedImage = await image.deleteImageById(req._id);
         const result = await user.unlinkImageToUser(req.user._id, req._id);
-        return res.status(200).json({deletedImage});
+        return res.status(200).json(deletedImage.value);
     } catch (err) {
         return res.status(500).json({err});
     }
