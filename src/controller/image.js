@@ -26,7 +26,9 @@ const stream = require('stream');
   *         type: file     
   *     responses:
   *       200:
-  *         description: file added           
+  *         description: Image that get upload.
+  *         schema:
+  *             $ref: '#definitions/Avatar'         
   *       403:
   *         description: Invalid credentials.
   *       500:
@@ -62,7 +64,7 @@ module.exports.uploadImage = async (req, res) => {
   *         description: User images
   *         type: array
   *         items:
-  *             $ref: '#/definitions/User Images'          
+  *             $ref: '#/definitions/Avatar summary'          
   *       403:
   *         description: Invalid credentials.
   *       500:
@@ -151,6 +153,8 @@ module.exports.getImage = async (req,res) => {
   *     responses:
   *       200:
   *         description: Return the deleted image meta data
+  *         schema:
+  *             $ref: '#definitions/Avatar summary'
   *       403:
   *         description: Invalid credentials.
   *       500:

@@ -32,7 +32,9 @@ const queue = require('../jobs/queue');
   *         type: string       
   *     responses:
   *       200:
-  *         description: file added           
+  *         description: User that get deleted.
+  *         schema:
+  *             $ref: '#definitions/Contentful Image'       
   *       403:
   *         description: Invalid credentials.
   *       500:
@@ -43,7 +45,7 @@ module.exports.uploadImage = async (req, res) => {
     try {
         const image = await contentfulImage.uploadImage(req.body, req.file);
         await contentfulUser.linkAsset(req.user.contentfulId, image.sys.id);
-        res.status(200).json({image});
+        res.status(200).json(image);
     } catch (err) {
         res.status(500).json({err});
     }
@@ -64,7 +66,9 @@ module.exports.uploadImage = async (req, res) => {
   *       200:
   *         description: User images
   *         schema:
-  *             type: file
+  *             type: array
+  *             items:
+  *                 $ref: '#/definitions/Links'
   *       403:
   *         description: Invalid credentials.
   *       500:
@@ -75,7 +79,7 @@ module.exports.getImages = async (req, res) => {
     try {
         const images = await contentfulImage.getImagesOfUser(req.user.contentfulId);
         if (images) {
-            return res.status(200).json({images});
+            return res.status(200).json(images);
         } 
         return res.status(404).json({error: 'no images were found'});
     } catch (err) {
@@ -102,7 +106,9 @@ module.exports.getImages = async (req, res) => {
   *       - JWT: []  
   *     responses:
   *       200:
-  *         description: User images
+  *         description: User image
+  *         schema:
+  *             $ref: '#definitions/Contentful Image' 
   *       403:
   *         description: Invalid credentials.
   *       500:
@@ -112,7 +118,7 @@ module.exports.getImages = async (req, res) => {
 module.exports.getImage = async (req, res) => {
     try {
         const image = await contentfulImage.getImageById(req.params._id);
-        return res.status(200).json({image});
+        return res.status(200).json(image);
     } catch (err) {
         res.status(500).json({err});
     }
@@ -137,7 +143,9 @@ module.exports.getImage = async (req, res) => {
   *       - JWT: []  
   *     responses:
   *       200:
-  *         description: User images
+  *         description: Image that got deleted
+  *         schema:
+  *             $ref: '#definitions/Contentful Image' 
   *       403:
   *         description: Invalid credentials.
   *       500:
@@ -150,7 +158,7 @@ module.exports.deleteImage = async (req, res) => {
             contentfulUser.unlinkAsset(req.user.contentfulId, req.params._id),
             contentfulImage.deleteImageById(req.params._id)
         ])
-        res.status(200).json({ image: results[1] });
+        res.status(200).json(results[1]);
     } catch (err) {
         res.status(500).json({err});
     }
@@ -170,6 +178,8 @@ module.exports.deleteImage = async (req, res) => {
   *     responses:
   *       200:
   *         description: User data
+  *         schema:
+  *             $ref: '#definitions/Contentful User'
   *       403:
   *         description: Invalid credentials.
   *       500:
@@ -179,7 +189,7 @@ module.exports.deleteImage = async (req, res) => {
 module.exports.getUser = async (req, res) => {
     try {
         const user = await contentfulUser.getUserById(req.user.contentfulId);
-        return res.status(200).json({user});
+        return res.status(200).json(user[0]);
     } catch (err) {
         console.log(err);
         res.status(500).json({err});
@@ -218,7 +228,12 @@ module.exports.getUser = async (req, res) => {
   *         type: string       
   *     responses:
   *       200:
-  *         description: file added           
+  *         description: file added   
+  *         schema:
+  *                 type: object
+  *                 properties:
+  *                     OK:
+  *                         type: number    
   *       403:
   *         description: Invalid credentials.
   *       500:
@@ -250,7 +265,12 @@ module.exports.getUser = async (req, res) => {
   *       - JWT: []  
   *     responses:
   *       200:
-  *         description: User images
+  *         description: file deleted
+  *         schema:
+  *                 type: object
+  *                 properties:
+  *                     OK:
+  *                         type: number 
   *       403:
   *         description: Invalid credentials.
   *       500:
