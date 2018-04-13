@@ -1,6 +1,7 @@
 const contentfulImage = require('../contentful/image');
 const contentfulUser  = require('../contentful/user');
 const queue = require('../jobs/queue');
+const request = require('request');
 /**
 * @swagger
   * /api/contentful/image:
@@ -280,4 +281,46 @@ module.exports.getUser = async (req, res) => {
  module.exports.deleteImageFast = (req, res) => {
     queue.createContentfulImageDeleteJob(req.user.contentfulId, req.params._id);
     res.status(200).json({OK: 1});
+}
+
+/**
+* @swagger
+  * /api/contentful/stream/image:
+  *   post:
+  *     tags:
+  *       - Contentful
+  *     summary: Retrieve image with the url
+  *     produces:
+  *       - image/jpeg
+  *       - image/png
+  *       - image/jpg
+  *     security:
+  *       - JWT: []  
+  *     parameters:
+  *       - name: URL of image
+  *         in: body
+  *         required: true
+  *         schema:
+  *           type: object
+  *           properties:
+  *               url:
+  *                    type: string 
+  *     responses:
+  *       200:
+  *         description: User images
+  *         schema:
+  *             type: file
+  *       403:
+  *         description: Invalid credentials.
+  *       500:
+  *         description: Internal error.
+  *
+  */
+module.exports.streamImage = async (req, res) => {
+    try {
+        const url = req.body.url;
+        request.get(url).pipe(res);
+    } catch (err) {
+        res.status(500).json({err});
+    }
 }

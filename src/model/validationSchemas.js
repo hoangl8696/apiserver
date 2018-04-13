@@ -24,5 +24,9 @@ module.exports = {
     contentfulFileUploadSchema: Joi.object().keys({
         title: Joi.string().required(),
         description: Joi.string()
+    }),
+
+    contentfulImageStreamSchema: Joi.object().keys({
+        url: Joi.string().required()
     })
 };

@@ -106,3 +106,13 @@ module.exports.validateContentfulUploadBody = () => {
         next();
     }
 }
+
+module.exports.validateContentfulImageStreamBody = () => {
+    return (req, res, next) => {
+        const result = Joi.validate(req.body, validationSchema.validateContentfulImageStreamBody);
+        if (result.error) {
+            return res.status(400).json(result.error);
+        }
+        next();
+    }
+}
